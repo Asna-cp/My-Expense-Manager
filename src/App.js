@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import './index.css';
+// import {useState} from "react";
+// import RegisterForm from "./components/RegisterForm";
+import Login from "./components/Login"
+import { BrowserRouter,Routes,Route } from "react-router-dom";
+import ViewExpenses from "./components/ViewExpenses";
+import AddExpenses from "./components/AddExpenses";
+
 
 function App() {
+  const addNewExpense = (newExpense)=> {
+     
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+    <Routes>
+    {/* <Route path="/" element ={<RegisterForm/>}></Route> */}
+
+      <Route path="/" element ={<Login/>}></Route>
+      <Route path="/viewExpenses" element ={<ViewExpenses/>}></Route>
+      {/* <Route path="/addExpenses" element={<AddExpenses addNewExpense={addNewExpense}/>}></Route> */}
+    </Routes>
+    </BrowserRouter>
+
   );
 }
 
