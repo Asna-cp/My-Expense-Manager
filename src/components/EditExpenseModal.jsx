@@ -21,7 +21,7 @@ const EditExpenseModal = ({
     setupdatedAt(editRow.updatedAt);
     setAmount(editRow.amount);
     setCreatedBy(editRow.createdBy);
-  }, []);
+  } , [editRow.amount, editRow.category, editRow.createdBy, editRow.date, editRow.name, editRow.updatedAt]);
 
   console.log(editRow);
   const handleEditSubmit = (e) => {
