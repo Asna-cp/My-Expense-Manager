@@ -1,17 +1,23 @@
 import React, { useState } from "react";
-import Modal from "./Modal";
+import AddExpenseModal from "./AddExpenseModal";
 import { nanoid } from "nanoid";
 import DeleteModal from "./DeleteModal";
-import DeleteAndEditIcon from "../asset/icons/DeleteIcon";
+import DeleteIcon from "../asset/icons/DeleteIcon";
 import EditIcon from "../asset/icons/EditIcon";
 import SearchIcon from "../asset/icons/SearchIcon";
 import FilterIcon from "../asset/icons/FilterIcon";
+import EditExpenseModal from "./EditExpenseModal";
 
 function ViewExpenses() {
   const [isDelete, setIsDelete] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
+
+  //Edit Expenses
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editRow, setEditRow] = useState({});
+  const [search, setSearch] = useState();
+
   const [expenses, setExpenses] = useState([
-    // const data = [
     {
       id: nanoid(),
       name: "Groceries",
@@ -43,10 +49,14 @@ function ViewExpenses() {
     const deletedExpenses = expenses.filter((items) => items.id !== id);
     setExpenses([...deletedExpenses]);
   };
-  // Add more data as needed
+
+  const handleEdit = (expense) => {
+    setEditRow(expense);
+    setModalOpen(true);
+  };
 
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+    <div className=" relative overflow-x-auto  min-h-full  justify-center px-6 py-12 lg:px-8">
       {!isAdd ? (
         <>
           <div className="flex justify-between mb-4">
@@ -55,6 +65,7 @@ function ViewExpenses() {
               <input
                 type="text"
                 placeholder="Search..."
+                onChange={(e) => setSearch(e.target.search)}
                 className="pl-10 pr-4 py-2 border rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-primary-600"
               />
               <SearchIcon />
@@ -65,7 +76,7 @@ function ViewExpenses() {
                   <option>Name</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <FilterIcon/>
+                  <FilterIcon />
                 </div>
               </div>
 
@@ -77,71 +88,109 @@ function ViewExpenses() {
               </button>
             </div>
           </div>
-          <table className="overflow-x-auto min-w-full border">
-            <thead>
-              <tr className="border-b">
-                <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell">
-                  Name
-                </th>
-                <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell">
-                  Category
-                </th>
-                <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell">
-                  Date of Expense
-                </th>
-                <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell">
-                  Amount
-                </th>
-                <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell">
-                  Updated at
-                </th>
-                <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell">
-                  Created by
-                </th>
-                <th className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {expenses.map((item) => (
-                <tr
-                  key={item.id}
-                  className="bg-gray-300 border border-grey-500 md:border-none block md:table-row"
-                >
-                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
-                    {item.name}
-                  </td>
-                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
-                    {item.category}
-                  </td>
-                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
-                    {item.date}
-                  </td>
-                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
-                    {item.amount}
-                  </td>
-                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
-                    {item.updatedAt}
-                  </td>
-                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
-                    {item.createdBy}
-                  </td>
-                  <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
-                    <button className="mr-2">
-                      <EditIcon />
-                    </button>
-                    <button onClick={() => handleDelete(item.id)}>
-                      <DeleteAndEditIcon />
-                    </button>
-                  </td>
+          <div className="relative w-92 overflow-x-auto">
+            <table className=" min-w-full border">
+              <thead>
+                <tr className="border-b">
+                  <th
+                    scope="col"
+                    className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell"
+                  >
+                    Name
+                  </th>
+
+                  <th
+                    scope="col"
+                    className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell"
+                  >
+                    Category
+                  </th>
+                  <th
+                    scope="col"
+                    className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell"
+                  >
+                    Date of Expense
+                  </th>
+                  <th
+                    scope="col"
+                    className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell"
+                  >
+                    Amount
+                  </th>
+                  <th
+                    scope="col"
+                    className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell"
+                  >
+                    Updated at
+                  </th>
+                  <th
+                    scope="col"
+                    className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell"
+                  >
+                    Created by
+                  </th>
+                  <th
+                    scope="col"
+                    className="bg-gray-600 p-2 text-white font-bold md:border md:border-grey-500  text-left block md:table-cell"
+                  >
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {expenses.map((item, id) => (
+                  <tr
+                    key={item.id}
+                    className="bg-gray-300 border border-grey-500 md:border-none block md:table-row"
+                  >
+                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
+                      {item.name}
+                    </td>
+                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
+                      {item.category}
+                    </td>
+                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
+                      {item.date}
+                    </td>
+                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
+                      {item.amount}
+                    </td>
+                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
+                      {item.updatedAt}
+                    </td>
+                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
+                      {item.createdBy}
+                    </td>
+                    <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell font-thin">
+                      <button className="mr-2" onClick={() => handleEdit(item)}>
+                        <EditIcon />
+
+                        {modalOpen && (
+                          <EditExpenseModal
+                            setExpenses={setExpenses}
+                            expenses={expenses}
+                            editRow={editRow}
+                            closeModal={() => {
+                              setModalOpen(false);
+                            }}
+                          />
+                        )}
+                      </button>
+                      <button onClick={() => handleDelete(item.id)}>
+                        <DeleteIcon />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       ) : (
-        <Modal addNewExpense={addNewExpense} handleIsAdded={handleIsAdded} />
+        <AddExpenseModal
+          addNewExpense={addNewExpense}
+          handleIsAdded={handleIsAdded}
+        />
       )}
       {isDelete && <DeleteModal setIsDelete={setIsDelete} />}
     </div>

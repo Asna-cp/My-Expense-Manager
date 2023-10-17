@@ -3,8 +3,7 @@ import React from 'react'
 const DeleteModal = ({setIsDelete}) => {
     const handleDelete =(id)=>{
         setIsDelete(false)
-        // const deletedExpenses = expenses.filter((items)=> items.id !== id)  
-        // setExpenses([...deletedExpenses])
+      
       }
   return (
     <div className='fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center'

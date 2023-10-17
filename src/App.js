@@ -5,13 +5,13 @@ import './index.css';
 import Login from "./components/Login"
 import { BrowserRouter,Routes,Route } from "react-router-dom";
 import ViewExpenses from "./components/ViewExpenses";
-import AddExpenses from "./components/AddExpenses";
+
 
 
 function App() {
-  const addNewExpense = (newExpense)=> {
+  // const addNewExpense = (newExpense)=> {
      
-  }
+  // }
   return (
     <BrowserRouter>
     <Routes>
