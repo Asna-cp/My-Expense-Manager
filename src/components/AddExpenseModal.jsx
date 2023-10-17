@@ -34,13 +34,13 @@ const AddExpenseModal = ({ addNewExpense, handleIsAdded }) => {
       className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center"
       id="outerDiv"
     >
-      <div className="overflow-y-scroll w-80 h-80 border-zinc-300 bg-white border-[1px] rounded-xl p-5 flex flex-col gap-4">
+      <div className="overflow-y-scroll  w-80 h-80 border-zinc-300 bg-white border-[1px] rounded-xl p-5 flex flex-col gap-4">
         <div className="flex flex-col justify-center px-3 py-2">
           <h2 className="mt-0 text-center text-xl font-bold leading-9 tracking-tight text-gray-900">
             Add Expenses
           </h2>
 
-          <div style={{ maxHeight: "50vh", overflowY: "auto" }}>
+          <div >
             <form className="space-y-2" onSubmit={handleSubmit} method="POST">
               <div>
                 <label
